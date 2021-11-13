@@ -3,7 +3,6 @@
 
 from solar_objects import Star, Planet
 
-
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -102,7 +101,24 @@ def write_space_objects_data_to_file(output_filename, space_objects):
                 ' ' + str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
                 file.write(string)
 
-# FIXME: хорошо бы ещё сделать функцию, сохранающую статистику в заданный файл...
+def save_space_objects_positions(space_objects, time):
+    """
+    Сохраняет данные о положении тел в файл в формате
+        <Физическое время с начала симуляции в секундах>
+        <x> <y> <Vx> <Vy>
+        <...>
+        <x> <y> <Vx> <Vy>
+        
+    Параметры:
+        **space_objects** — список объектов планет и звёзд
+        **physical_time** — время с начала симуляции
+    """
+    with open('stats.txt', 'a') as file:
+            file.write(str(time) + '\n')
+            for obj in space_objects:
+                string = str(obj.x) + ' ' + str(obj.y) + ' ' + str(obj.Vx) + ' ' + str(obj.Vy) + '\n'
+                file.write(string)
+            file.write('\n')
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

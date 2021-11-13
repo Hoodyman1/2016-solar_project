@@ -36,6 +36,7 @@ def execution():
     global displayed_time
     if space_objects != []:
         recalculate_space_objects_positions(space_objects, time_step.get())
+        save_space_objects_positions(space_objects, physical_time)
     for body in space_objects:
         update_object_position(space, body)
     physical_time += time_step.get()
@@ -54,6 +55,7 @@ def start_execution():
     start_button['text'] = "Pause"
     start_button['command'] = stop_execution
 
+    clear_stats(space_objects)
     execution()
     print('Started execution...')
 
@@ -68,6 +70,24 @@ def stop_execution():
     start_button['command'] = start_execution
     print('Paused execution.')
 
+
+def clear_stats(space_objects):
+    """
+    Сохраняет информацию о типах существующих тел в формате:
+        Star  <радиус в пикселах> <цвет>
+        <...>
+        Planet <радиус в пикселах> <цвет>
+        #End of the header
+        
+    Параметры:
+        **space_objects** — список объектов планет и звёзд
+        **physical_time** — время с начала симуляции
+    """
+    with open('stats.txt', 'w') as file:
+            for obj in space_objects:
+                string = str(obj.type) + ' ' + str(obj.R) + ' ' + str(obj.color) + '\n'
+                file.write(string)
+            file.write('#End of the header\n\n')
 
 def open_file_dialog():
     """Открывает диалоговое окно выбора имени файла и вызывает

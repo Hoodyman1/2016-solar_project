@@ -15,13 +15,15 @@ def calculate_force(body, space_objects):
     """
 
     body.Fx = body.Fy = 0
+    connection = False
     for obj in space_objects:
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
         r = ((body.x - obj.x)**2 + (body.y - obj.y)**2)**0.5
-        r = max(r, body.R + obj.R)  # ограничение радиуса снизу, что бы сила никогда не была бесконечной
+        if r == 0: connection = True  # Защита от бесконечной силы
         body.Fx += gravitational_constant * body.m * obj.m * (obj.x - body.x) / r**3
         body.Fy += gravitational_constant * body.m * obj.m * (obj.y - body.y) / r**3
+    if connection: body.Fx = body.Fy = 0
 
 
 def move_space_object(body, dt):
