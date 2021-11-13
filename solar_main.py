@@ -2,6 +2,7 @@
 # license: GPLv3
 
 import tkinter
+#import pygame
 from tkinter.filedialog import *
 from solar_vis import *
 from solar_model import *
@@ -116,6 +117,7 @@ def main():
     physical_time = 0
 
     root = tkinter.Tk()
+    root.title("Kepler's laws of motion")
     # космическое пространство отображается на холсте типа Canvas
     space = tkinter.Canvas(root, width=window_width, height=window_height, bg="black")
     space.pack(side=tkinter.TOP)
@@ -147,6 +149,32 @@ def main():
 
     root.mainloop()
     print('Modelling finished!')
+
+
+##def button_down():
+##    '''Обработка нажатия. Сработает лишь при отпускании'''
+##    global start_save, start_open, start_start
+##    
+##    if pygame.key.get_pressed()[pygame.K_s]:
+##        start_save = True #Сохранить
+##    if pygame.key.get_pressed()[pygame.K_o]:
+##        start_open = True #Открыть
+##    if pygame.key.get_pressed()[pygame.K_SPACE]:
+##        start_start = True #Запустить
+##
+##def button_up():
+##    '''Обработка отпускания'''
+##    global start_save, start_open, start_start
+##    
+##    if start_save and not pygame.key.get_pressed()[pygame.K_s]:
+##        start_save = False
+##        save_file_dialog() #Сохранить
+##    if start_open and not pygame.key.get_pressed()[pygame.K_o]:
+##        start_open = False
+##        open_file_dialog() #Открыть
+##    if start_start and not pygame.key.get_pressed()[pygame.K_SPACE]:
+##        start_start = False
+##        start_execution() #Запустить
 
 if __name__ == "__main__":
     main()

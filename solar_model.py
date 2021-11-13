@@ -33,9 +33,12 @@ def move_space_object(body, dt):
     """
 
     ax = body.Fx/body.m
-    body.x += 42  # FIXME: не понимаю как менять...
+    body.x += body.Vx
     body.Vx += ax*dt
-    # FIXME: not done recalculation of y coordinate!
+    
+    ay = body.Fy/body.m
+    body.y += body.Vy
+    body.Vy += ay*dt
 
 
 def recalculate_space_objects_positions(space_objects, dt):
@@ -43,7 +46,7 @@ def recalculate_space_objects_positions(space_objects, dt):
 
     Параметры:
 
-    **space_objects** — список оьъектов, для которых нужно пересчитать координаты.
+    **space_objects** — список объектов, для которых нужно пересчитать координаты.
     **dt** — шаг по времени
     """
 

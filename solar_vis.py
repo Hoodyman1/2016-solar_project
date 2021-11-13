@@ -9,11 +9,14 @@
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 800
+window_width = 600
 """Ширина окна"""
 
-window_height = 800
+window_height = 600
 """Высота окна"""
+
+window_size = str(window_width) + 'x' + str(window_height)
+"""Размеры окна в формате 600х600"""
 
 scale_factor = None
 """Масштабирование экранных координат по отношению к физическим.
@@ -24,6 +27,7 @@ scale_factor = None
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
     global scale_factor
+    print(window_height, window_width)
     scale_factor = 0.4*min(window_height, window_width)/max_distance
     print('Scale factor:', scale_factor)
 
