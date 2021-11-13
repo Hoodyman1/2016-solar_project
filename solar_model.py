@@ -32,17 +32,20 @@ def move_space_object(body, dt):
     **body** — тело, которое нужно переместить.
     """
 
-    ax = body.Fx/body.m
-    body.x += body.Vx
-    body.Vx += ax*dt
+    if body.m != 0:
+        ax = body.Fx/body.m
+        ay = body.Fy/body.m
+    else:
+        ax = ay = 0
     
-    ay = body.Fy/body.m
-    body.y += body.Vy
+    body.x += body.Vx*dt
+    body.y += body.Vy*dt
+    body.Vx += ax*dt
     body.Vy += ay*dt
 
 
 def recalculate_space_objects_positions(space_objects, dt):
-    """Пересчитывает координаты объектов.
+    """Пересчитывает координаты объеspace_objectsктов.
 
     Параметры:
 
@@ -52,7 +55,6 @@ def recalculate_space_objects_positions(space_objects, dt):
 
     for body in space_objects:
         calculate_force(body, space_objects)
-    for body in space_objects:
         move_space_object(body, dt)
 
 
