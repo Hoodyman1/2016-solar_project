@@ -70,24 +70,11 @@ def stop_execution():
     start_button['command'] = start_execution
     print('Paused execution.')
 
-
-def clear_stats(space_objects):
-    """
-    Сохраняет информацию о типах существующих тел в формате:
-        Star  <радиус в пикселах> <цвет>
-        <...>
-        Planet <радиус в пикселах> <цвет>
-        #End of the header
-        
-    Параметры:
-        **space_objects** — список объектов планет и звёзд
-        **physical_time** — время с начала симуляции
-    """
-    with open('stats.txt', 'w') as file:
-            for obj in space_objects:
-                string = str(obj.type) + ' ' + str(obj.R) + ' ' + str(obj.color) + '\n'
-                file.write(string)
-            file.write('#End of the header\n\n')
+def open_diagram():
+    """Запускает считывание информации и отображает графики"""
+    stop_execution()
+    legend, t, r, v = get_data_for_plots()
+    draw_plots(legend, t, r, v)
 
 def open_file_dialog():
     """Открывает диалоговое окно выбора имени файла и вызывает
@@ -96,21 +83,24 @@ def open_file_dialog():
     """
     global space_objects
     global perform_execution
-    perform_execution = False
+    global physical_time
+    stop_execution()
     for obj in space_objects:
         space.delete(obj.image)  # удаление старых изображений планет
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
-    calculate_scale_factor(max_distance)
+    if in_filename != '':
+        space_objects = read_space_objects_data_from_file(in_filename)
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in space_objects])
+        calculate_scale_factor(max_distance)
 
-    for obj in space_objects:
-        if obj.type == 'star':
-            create_star_image(space, obj)
-        elif obj.type == 'planet':
-            create_planet_image(space, obj)
-        else:
-            raise AssertionError()
+        for obj in space_objects:
+            if obj.type == 'star':
+                create_star_image(space, obj)
+            elif obj.type == 'planet':
+                create_planet_image(space, obj)
+            else:
+                raise AssertionError()
+        physical_time = 0
 
 
 def save_file_dialog():
@@ -118,9 +108,9 @@ def save_file_dialog():
     функцию считывания параметров системы небесных тел из данного файла.
     Считанные объекты сохраняются в глобальный список space_objects
     """
+    stop_execution()
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
     write_space_objects_data_to_file(out_filename, space_objects)
-
 
 def main():
     """Главная функция главного модуля.
@@ -162,6 +152,8 @@ def main():
     load_file_button.pack(side=tkinter.LEFT)
     save_file_button = tkinter.Button(frame, text="Save to file...", command=save_file_dialog)
     save_file_button.pack(side=tkinter.LEFT)
+    open_diagram_button = tkinter.Button(frame, text="View stats", command=open_diagram)
+    open_diagram_button.pack(side=tkinter.LEFT)
 
     displayed_time = tkinter.StringVar()
     displayed_time.set(str(physical_time) + " seconds gone")
